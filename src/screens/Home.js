@@ -2,19 +2,17 @@ import React, {Component,useState, useEffect} from 'react';
 import {
   View,
   Text,
+  FlatList,
   StyleSheet,
   Image,
   Button,
   ImageBackground
 } from 'react-native';
+import { Card } from 'react-native-elements'
 import {ScrollView} from 'react-native-gesture-handler';
-import Buttons from '../components/Buttons';
-import Cards from '../components/Cards';
-import Icon from 'react-native-vector-icons/Feather';
+import Icon from 'react-native-vector-icons';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { getCountriesData } from '../source/dataCovid19';
-import { event } from 'react-native-reanimated';
-import {Picker} from '@react-native-picker/picker';
+//import '../styles/home.css';
 //import { getCountriesData } from '../source/dataCovid19';
 
 export default class Home extends Component{
@@ -39,6 +37,12 @@ export default class Home extends Component{
                 {
                     label: country.country,
                     value: country.countryInfo.iso2,
+                    todayCases: country.todayCases,
+                    cases: country.cases,
+                    todayRecovered: country.todayRecovered,
+                    recovered: country.recovered,
+                    todayDeaths: country.deaths,
+                    deaths: country.todayDeaths,
                 }));
             this.setState({countries: countries_data});
           } catch (error) {
@@ -67,7 +71,6 @@ export default class Home extends Component{
         try {
             let response = await fetch(url_country);
             let countries_data = await response.json();
-            console.log(countries_data);
             this.setState({
                 todayCases: countries_data.todayCases,
                 cases: countries_data.cases,
@@ -80,17 +83,15 @@ export default class Home extends Component{
             console.error(error);
           } 
     }
-    onCountryChange = (event) =>{
-        const countryCode = event.target.value;
-    }
     async componentDidMount(){
         this.getCountries();
         this.getWorldwideData();
-        
           
     }
+
     render(){
         return(
+            
             <View>
                 <DropDownPicker
                 searchable={true}
@@ -106,13 +107,22 @@ export default class Home extends Component{
                 dropDownStyle={{backgroundColor: '#fafafa'}}
                 onChangeItem={item => this.getDataAboutCountry(item)}
                 />
-                <Text>CORONAVIRUS</Text>
-                <Text>Today cases: {this.state.todayCases}</Text>
-                <Text>Cases: {this.state.cases}</Text>
-                <Text>Today recovered: {this.state.todayRecovered}</Text>
-                <Text>Recovered: {this.state.recovered}</Text>
-                <Text>Today deaths: {this.state.todayDeaths}</Text>
-                <Text>Deaths: {this.state.deaths}</Text>
+                <FlatList style={{marginTop: 120}}
+                showsHorizontalScrollIndicator={false}
+                data={[
+                   {title:"CASES", today: this.state.todayCases, all:this.state.cases, key: "cases"},
+                   {title:"RECOVERED", today: this.state.todayRecovered, all: this.state.recovered, key: "recovered"},
+                   {title:"DEATHS", today: this.state.todayDeaths,all: this.state.deaths, key: "deaths"} 
+                ]}
+                renderItem={({item}) => (
+                <Card>
+                    <Card.Title>{item.title}</Card.Title> 
+                    <Text>Today: {item.today}</Text>
+                    <Text>All: {item.all}</Text>
+                </Card>
+                )}
+                >
+                </FlatList>
             </View>
         )   
     }
