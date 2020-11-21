@@ -12,6 +12,7 @@ import { Card } from 'react-native-elements'
 import {ScrollView} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons';
 import DropDownPicker from 'react-native-dropdown-picker';
+import {sortDataByCases} from '../source/utils'
 //import '../styles/home.css';
 //import { getCountriesData } from '../source/dataCovid19';
 
@@ -41,10 +42,11 @@ export default class Home extends Component{
                     cases: country.cases,
                     todayRecovered: country.todayRecovered,
                     recovered: country.recovered,
-                    todayDeaths: country.deaths,
-                    deaths: country.todayDeaths,
+                    todayDeaths: country.todayDeaths,
+                    deaths: country.deaths,
                 }));
-            this.setState({countries: countries_data});
+            let sorted_data = sortDataByCases(countries_data);
+            this.setState({countries: sorted_data});
           } catch (error) {
             console.error(error);
           } 
@@ -107,8 +109,10 @@ export default class Home extends Component{
                 dropDownStyle={{backgroundColor: '#fafafa'}}
                 onChangeItem={item => this.getDataAboutCountry(item)}
                 />
-                <FlatList style={{marginTop: 120}}
+                <FlatList
                 showsHorizontalScrollIndicator={false}
+                horizontal
+                contentContainerStyle={{alignItems: 'center'}}
                 data={[
                    {title:"CASES", today: this.state.todayCases, all:this.state.cases, key: "cases"},
                    {title:"RECOVERED", today: this.state.todayRecovered, all: this.state.recovered, key: "recovered"},
