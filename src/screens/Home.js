@@ -12,7 +12,11 @@ import { Card } from 'react-native-elements'
 import {ScrollView} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {sortDataByCases} from '../source/utils'
+import {sortDataByCases} from '../source/utils';
+import ChartData from '../source/ChartData';
+import ranks from '../styles/home';
+import home from '../styles/home';
+import { SafeAreaView } from 'react-navigation';
 //import '../styles/home.css';
 //import { getCountriesData } from '../source/dataCovid19';
 
@@ -45,12 +49,12 @@ export default class Home extends Component{
                     todayDeaths: country.todayDeaths,
                     deaths: country.deaths,
                 }));
-            let sorted_data = sortDataByCases(countries_data);
-            this.setState({countries: sorted_data});
+            this.setState({countries: countries_data});
           } catch (error) {
             console.error(error);
           } 
     }
+   
     getWorldwideData = async () => {
         const url_country = `https://disease.sh/v3/covid-19/all`;
         try {
@@ -93,8 +97,9 @@ export default class Home extends Component{
 
     render(){
         return(
-            
             <View>
+                <SafeAreaView>
+                <View style={home.country_Picer}>
                 <DropDownPicker
                 searchable={true}
                 searchablePlaceholder="Search for an item"
@@ -108,7 +113,8 @@ export default class Home extends Component{
                 }}
                 dropDownStyle={{backgroundColor: '#fafafa'}}
                 onChangeItem={item => this.getDataAboutCountry(item)}
-                />
+                /></View>
+                <View style={home.list_flex}>
                 <FlatList
                 showsHorizontalScrollIndicator={false}
                 horizontal
@@ -126,7 +132,11 @@ export default class Home extends Component{
                 </Card>
                 )}
                 >
-                </FlatList>
+                </FlatList></View>
+                <View style={home.chartContainer}>
+                <ChartData/>
+                </View>
+                </SafeAreaView>
             </View>
         )   
     }
