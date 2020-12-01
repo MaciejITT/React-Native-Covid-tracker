@@ -1,22 +1,26 @@
 import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
-    country_Picer:{
-        position: 'relative',
-        elevation: 5,
-
-    },
     list_flex:{
-        elevation: 4,
     },
     chartContainer:{
-      elevation:4,
       marginTop: 10,
+      marginLeft:10,
+      marginRight:10,
+      marginBottom:5,
+      backgroundColor: 'white',
+      borderRadius:10,
+      paddingTop: 10,
     },
+
     chartTitle:{
-        elevation:4,
-        marginLeft: 10
-        
+        marginLeft: 10,
+        justifyContent:'center',
+        textTransform: 'uppercase',
     },
+    cardStyling:{
+        borderTopWidth:10,
+        borderRadius:5,
+    }
 
 })

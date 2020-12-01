@@ -26,9 +26,8 @@ const HomeStackNavigator = () => {
         <NavigationContainer>
             <MaterialBottomTabs.Navigator >
                 <MaterialBottomTabs.Screen name="HOME" component={Home}/>
-                {/*<MaterialBottomTabs.Screen name="MAP" component={Map}/>*/}
+                <MaterialBottomTabs.Screen name="MAP" component={Map}/>
                 <MaterialBottomTabs.Screen name="RANKING" component={Ranks}/>
-                <MaterialBottomTabs.Screen name="GRAPHS" component={Graphs}/>
             </MaterialBottomTabs.Navigator>
         </NavigationContainer>
     )

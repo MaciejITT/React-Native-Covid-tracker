@@ -1,22 +1,22 @@
-import React, {Component,useState, useEffect} from 'react';
+import React, {Component} from 'react';
 import {
   View,
   Text,
   FlatList,
-  StyleSheet,
-  Image,
-  Button,
-  ImageBackground
+  TouchableWithoutFeedback,
+  ScrollView,
 } from 'react-native';
 import { Card } from 'react-native-elements'
-import {ScrollView} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {sortDataByCases} from '../source/utils';
 import ChartData from '../source/ChartData';
 import ranks from '../styles/home';
 import home from '../styles/home';
-import { SafeAreaView } from 'react-navigation';
+//import { SafeAreaView } from 'react-navigation';
+import { event } from 'react-native-reanimated';
+import { CardStyleInterpolators } from 'react-navigation-stack';
+import { SafeAreaView } from 'react-native-safe-area-context';
 //import '../styles/home.css';
 //import { getCountriesData } from '../source/dataCovid19';
 
@@ -32,6 +32,7 @@ export default class Home extends Component{
         recovered: null,
         todayDeaths: null,
         deaths: null,
+        casesType: 'cases',
     };
     getCountries = async () =>{
         const url_countries = "https://disease.sh/v3/covid-19/countries";
@@ -78,6 +79,7 @@ export default class Home extends Component{
             let response = await fetch(url_country);
             let countries_data = await response.json();
             this.setState({
+                country: item.label,
                 todayCases: countries_data.todayCases,
                 cases: countries_data.cases,
                 todayRecovered: countries_data.todayRecovered,
@@ -91,53 +93,64 @@ export default class Home extends Component{
     }
     async componentDidMount(){
         this.getCountries();
-        this.getWorldwideData();
-          
+        this.getWorldwideData();  
     }
+
 
     render(){
         return(
-            <View>
-                <SafeAreaView>
-                <View style={home.country_Picer}>
-                <DropDownPicker
-                searchable={true}
-                searchablePlaceholder="Search for an item"
-                searchableError={() => <Text>Not Found</Text>}
-                items={this.state.countries}
-                defaultValue= {this.state.country}
-                containerStyle={{height: 50}}
-                style={{backgroundColor: '#fafafa'}}
-                itemStyle={{
-                justifyContent: 'flex-start'
-                }}
-                dropDownStyle={{backgroundColor: '#fafafa'}}
-                onChangeItem={item => this.getDataAboutCountry(item)}
-                /></View>
+            <SafeAreaView>
+                        <DropDownPicker
+                        searchable={true}
+                        searchablePlaceholder="Search for an item"
+                        searchableError={() => <Text>Not Found</Text>}
+                        items={this.state.countries}
+                        defaultValue= 'worldwide'
+                        containerStyle={{height: 50,}}
+                        itemStyle={{
+                        justifyContent: 'flex-start',
+                        }}
+                        dropDownStyle={{backgroundColor: '#fafafa',zIndex:6}}
+                        onChangeItem={item => this.getDataAboutCountry(item)}
+                        />
                 <View style={home.list_flex}>
-                <FlatList
-                showsHorizontalScrollIndicator={false}
-                horizontal
-                contentContainerStyle={{alignItems: 'center'}}
-                data={[
-                   {title:"CASES", today: this.state.todayCases, all:this.state.cases, key: "cases"},
-                   {title:"RECOVERED", today: this.state.todayRecovered, all: this.state.recovered, key: "recovered"},
-                   {title:"DEATHS", today: this.state.todayDeaths,all: this.state.deaths, key: "deaths"} 
-                ]}
-                renderItem={({item}) => (
-                <Card>
-                    <Card.Title>{item.title}</Card.Title> 
-                    <Text>Today: {item.today}</Text>
-                    <Text>All: {item.all}</Text>
-                </Card>
-                )}
-                >
-                </FlatList></View>
-                <View style={home.chartContainer}>
-                <ChartData/>
+                    <SafeAreaView>
+                    <FlatList
+                        showsHorizontalScrollIndicator={false}
+                        horizontal
+                        contentContainerStyle={{alignItems: 'center'}}
+                        data={[
+                        {title:"CASES", today: this.state.todayCases, all:this.state.cases, key: "cases"},
+                        {title:"RECOVERED", today: this.state.todayRecovered, all: this.state.recovered, key: "recovered"},
+                        {title:"DEATHS", today: this.state.todayDeaths,all: this.state.deaths, key: "deaths"} 
+                        ]}
+                        renderItem={({item}) => (
+                        <TouchableWithoutFeedback onPress={()=>this.setState({casesType: item.key})} accessibilityRole='button'> 
+                        <Card
+                        containerStyle={{
+                            elevation:4, 
+                            borderTopWidth:10,
+                            borderRadius:5,
+                            borderTopColor: item.key === this.state.casesType ? "yellowgreen" : "#1A86DC"}}
+                            >
+                            <Card.Title>{item.title}</Card.Title> 
+                            <Text>Today: {item.today}</Text>
+                            <Text>All: {item.all}</Text>
+                        </Card>
+                        </TouchableWithoutFeedback>
+                        )}
+                    ></FlatList>
+                    </SafeAreaView>
                 </View>
-                </SafeAreaView>
-            </View>
+                    <ScrollView style={{marginTop: 10, paddingBottom:20}}>
+                    <Card containerStyle={home.chartContainer}>
+                        <Text style={home.chartTitle}>{this.state.country} new cases</Text>
+                        <ChartData casesType={this.state.casesType} country={this.state.country} />
+                    </Card>
+
+                    <View style={{marginBottom:60}}></View>
+                    </ScrollView>
+            </SafeAreaView>
         )   
     }
 }

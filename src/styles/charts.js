@@ -1,11 +1,13 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-    chart: {
-      flex: 1
-    },
     chartTitle:{
-        marginLeft: 10
-        
+      marginLeft: 10
+    },
+    container: {
+      flex:1,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: "#f5fcff",
     }
   });

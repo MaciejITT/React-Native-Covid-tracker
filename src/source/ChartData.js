@@ -7,114 +7,95 @@ import {
   } from 'react-native';
   import charts from '../styles/charts';
   import PureChart from 'react-native-pure-chart';
+  import numbro from "numbro";
+  import { VictoryAxis, VictoryChart, VictoryLine, VictoryTheme } from "victory-native";
+import Svg from 'react-native-svg';
+import { nullFormat } from 'numeral';
 
 class ChartData extends Component{
+    _isMounted = false;
     constructor() {
         super();
         this.state = {
             labels: ["February", "March", "April", "May", "June"],
             datasets: [
-                    {x: "7/27/20", y: 0}, 
-            ]
+                { Data: "9/25/20", Liczba: 32552391},
+                { Data: "9/25/20", Liczba: 32552391},
+            ],
           };
     }
-    buildChartData = (data, casesType) =>{
+    buildChartData = (data, casesType, country) =>{
         let chartData = [];
         let lastDataPoint;
-    
-        for (let date in data.cases){
+        let data_cases = country ==='worldwide'? data.cases : data['timeline'].cases;
+        
+        for (let date in data_cases){
             if (lastDataPoint){
                 let newDataPoint = {
-                    x: date,
-                    y: data[casesType][date] - lastDataPoint,
+                    Data: new Date(date),
+                    Liczba:  country ==='worldwide'? data[casesType][date] - lastDataPoint :data['timeline'][casesType][date] - lastDataPoint,
                 };
                 chartData.push(newDataPoint);
             }
-            lastDataPoint = data[casesType][date];
+            lastDataPoint = country ==='worldwide'? data[casesType][date] : data['timeline'][casesType][date];
         }
         return chartData;
     }
-    getDataforBasicChart = async () =>{
+    getDataforBasicChart = async (casesType='cases',country='worldwide') =>{
         let chartData =[];
-        await fetch('https://disease.sh/v3/covid-19/historical/all?lastdays=120')
+        const url = country==='worldwide'? 
+        'https://disease.sh/v3/covid-19/historical/all?lastdays=60':
+        `https://disease.sh/v3/covid-19/historical/${country}?lastdays=60`
+        ;
+        await fetch(url)
         .then((response) => {
             return response.json();
         })
         .then((data) => {
-            chartData = this.buildChartData(data, 'cases');
+                chartData = this.buildChartData(data, casesType, country);
             this.setState({datasets: chartData});
         });
     }
-    async UNSAFE_componentDidMount(){
-        this.getDataforBasicChart();
+    async componentDidMount(){
+        this.getDataforBasicChart(this.props.casesType, this.props.country);
+        this._isMounted = true;
+    }
+    componentDidUpdate(prevProps){
+        if (this.props.casesType !== prevProps.casesType || this.props.country !== prevProps.country) {
+            this.getDataforBasicChart(this.props.casesType, this.props.country); 
+        }
+    }
+    componentWillUnmount(){
+        this._isMounted = false;
     }
     render() {
         return(
-            <View style={Dimensions.get("window").width}>
-            <Text style={charts.chartTitle}>Worldwide</Text>
-            <PureChart data={this.state.datasets}
-            height={300} type='line'/>
-            </View>
+            <VictoryChart scale={{x: 'time'}} theme={VictoryTheme.material}>
+            <VictoryAxis
+            tickFormat={(t) => numbro(t).format({
+                                            average: true,
+                                            totalLength:3
+                                        })}
+            style={{ axis: { stroke: 'grey' },
+            axisLabel: { fontSize: 16, fill: '#E0F2F1' },
+            ticks: { stroke: '#ccc' },
+            tickLabels: { fontSize: 12, fill: 'black', fontWeight: 'bold' },
+            grid: { stroke: 'grey', strokeWidth: 0.25 },
+            }} dependentAxis/>
+            <VictoryAxis
+            style={{ axis: { stroke: 'grey' },
+              axisLabel: { fontSize: 16 },
+              ticks: { stroke: 'black' },
+              tickLabels: { fontSize: 10, fill: 'black', fontWeight: 'bold',angle: 45 }
+            }}
+            />
+              <VictoryLine  
+              data={this.state.datasets} x="Data" y="Liczba"
+              style={{data: {stroke: '#c43a31', strokeWidth: 1.5}}}
+              />
+            </VictoryChart>
         );
     }
 }
-/* <LineChart
-                    data={this.state}
-                    width={Dimensions.get("window").width} // from react-native
-                    height={300}
-                    yAxisLabel="$"
-                    yAxisSuffix="k"
-                    yAxisInterval={1} // optional, defaults to 1
-                    chartConfig={{
-                    backgroundColor: "#0095DF",
-                    backgroundGradientFrom: "#0094DE",
-                    backgroundGradientTo: "#91DF00",
-                    decimalPlaces: 2, // optional, defaults to 2dp
-                    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                    labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                    style:{
-                        
-                    },
-                    propsForDots: {
-                        r: "5",
-                        strokeWidth: "2",
-                        stroke: "#0094DE"
-                    }
-                    }}
-                    bezier
-                    style={{
-                    marginVertical: 8,
-                    borderRadius: 5,
-                    }}
-                />*/
-/*
-const buildChartData = (data, casesType) =>{
-    let chartData = [];
-    let lastDataPoint;
-
-    for (let date in data.cases){
-        if (lastDataPoint){
-            let newDataPoint = {
-                x: date,
-                y: data[casesType][date] - lastDataPoint,
-            };
-            chartData.push(newDataPoint);
-        }
-        lastDataPoint = data[casesType][date];
-    }
-    return chartData;
-};
-
-const getDataforBasicChart = async () =>{
-    let chartData =[];
-    await fetch('https://disease.sh/v3/covid-19/historical/all?lastdays=120')
-    .then((response) => {
-        return response.json();
-    })
-    .then((data) => {
-        chartData = buildChartData(data, 'cases');
-    });
-    return chartData; 
-};  */
 
   export default ChartData;

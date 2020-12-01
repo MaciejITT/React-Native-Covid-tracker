@@ -21,6 +21,8 @@
     "@react-navigation/native": "5.8.10",
     "@react-navigation/stack": "5.1.1",
     "axios": "^0.21.0",
+    "numbro": "^2.3.2",
+    "numeral": "^2.0.6",
     "react": "16.13.1",
     "react-native": "0.63.3",
     "react-native-chart-kit": "^6.7.0",
@@ -35,14 +37,14 @@
     "react-native-safe-area-context": "^3.1.8",
     "react-native-screens": "^2.13.0",
     "react-native-svg": "^12.1.0",
-    "react-native-svg-charts": "^5.4.0",
     "react-native-tab-view": "^2.15.2",
     "react-native-table-component": "^1.2.1",
     "react-native-vector-icons": "7.1.0",
     "react-navigation": "^4.4.3",
     "react-navigation-drawer": "1.4.0",
     "react-navigation-stack": "^2.10.1",
-    "react-navigation-tabs": "^2.10.1"
+    "react-navigation-tabs": "^2.10.1",
+    "victory-native": "^35.3.1"
   },
   "devDependencies": {
     "@babel/core": "7.12.3",
