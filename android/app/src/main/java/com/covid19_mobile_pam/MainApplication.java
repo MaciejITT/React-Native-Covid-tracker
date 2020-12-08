@@ -1,6 +1,7 @@
 package com.covid19_mobile_pam;
 
 import android.app.Application;
+import com.airbnb.android.react.maps.MapsPackage;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;

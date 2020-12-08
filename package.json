@@ -31,6 +31,7 @@
     "react-native-dynamic-vector-icons": "1.1.4",
     "react-native-elements": "^3.0.0-alpha.1",
     "react-native-gesture-handler": "1.8.0",
+    "react-native-maps": "0.27.1",
     "react-native-paper": "^4.3.1",
     "react-native-pure-chart": "^0.0.24",
     "react-native-reanimated": "^1.13.1",
