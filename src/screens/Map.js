@@ -9,6 +9,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { TouchableItem } from 'react-native-tab-view';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default class Map extends Component{ 
         state = {
@@ -118,7 +119,7 @@ export default class Map extends Component{
                         pinColor={'wheat'}
                         opacity={0.8}
                         >
-                          
+                        
                         <Callout>
                             <View style={styles.bubble}>
                                 <Text>{label}</Text>
@@ -151,7 +152,13 @@ const styles = StyleSheet.create({
         borderWidth:0.5,
         padding:15,
         width:200,
-    }
+    },
+    circle: {
+        width: 100,
+        height: 100,
+        borderRadius: 100 / 2,
+        backgroundColor: "red",
+      },
    });
    /*
    <Circle key={i} center={{

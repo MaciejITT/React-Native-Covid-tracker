@@ -16,6 +16,7 @@ import Map from '../screens/Map';
 import Ranks from '../screens/Ranks';
 import Graphs from '../screens/Graphs';
 import navigator from '../styles/navigator';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { color } from 'react-native-reanimated';
 
 const MaterialBottomTabs = createMaterialBottomTabNavigator();
@@ -25,9 +26,30 @@ const HomeStackNavigator = () => {
     return(
         <NavigationContainer>
             <MaterialBottomTabs.Navigator >
-                <MaterialBottomTabs.Screen name="HOME" component={Home}/>
-                <MaterialBottomTabs.Screen name="MAP" component={Map}/>
-                <MaterialBottomTabs.Screen name="RANKING" component={Ranks}/>
+                <MaterialBottomTabs.Screen name="HOME" component={Home}
+                options={{
+                    tabBarLabel: 'Home',
+                    tabBarIcon: ({ color }) => (
+                      <MaterialCommunityIcons name="home" color={color} size={26} />
+                    ),
+                  }}
+                />
+                <MaterialBottomTabs.Screen name="MAP" component={Map}
+                options={{
+                    tabBarLabel: 'Map',
+                    tabBarIcon: ({ color }) => (
+                      <MaterialCommunityIcons name="map" color={color} size={26} />
+                    ),
+                  }}
+                />
+                <MaterialBottomTabs.Screen name="RANKING" component={Ranks}
+                options={{
+                    tabBarLabel: 'Ranking',
+                    tabBarIcon: ({ color }) => (
+                      <MaterialCommunityIcons name="book" color={color} size={26} />
+                    ),
+                  }}
+                />
             </MaterialBottomTabs.Navigator>
         </NavigationContainer>
     )
