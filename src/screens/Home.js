@@ -105,7 +105,7 @@ export default class Home extends Component{
                         searchablePlaceholder="Search for an item"
                         searchableError={() => <Text>Not Found</Text>}
                         items={this.state.countries}
-                        defaultValue= 'worldwide'
+                        defaultValue= {this.state.country}
                         containerStyle={{height: 50,}}
                         itemStyle={{
                         justifyContent: 'flex-start',
