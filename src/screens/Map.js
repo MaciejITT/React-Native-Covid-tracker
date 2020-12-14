@@ -4,18 +4,18 @@ import {
   View,
   StyleSheet,
   Text,
+  Image,
+  ImageBackground,
+  SafeAreaView,
 } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { TouchableItem } from 'react-native-tab-view';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default class Map extends Component{ 
         state = {
-            country: 'pl',
+            country: '-',
             countries: [
-                {label: 'Poland', value: 'pl', latitude: 52, longitude: 20,},
+                {label: 'Search', value: '-', latitude: 0, longitude: 0},
             ],
             region: {
                 latitude: 52,
@@ -39,7 +39,7 @@ export default class Map extends Component{
                     population: country.population,
                     latitude: country.countryInfo.lat,
                     longitude: country.countryInfo.long,
-                    flag:country.countryInfo.flag
+                    flag: country.countryInfo.flag
                 }));
             this.setState({countries: countries_data});
           } catch (error) {
@@ -68,24 +68,31 @@ export default class Map extends Component{
             }
         } 
     }
-    coronavirusGeoMapInfo(){
-        let data = this.state.countries;
-        data.map(( label, value, cases, recovered, deaths, population, latitude, longitude) => (
-            <Circle center={{
-                latitude: 52,
-                longitude: 20
-            }}
-            strokeWidth={10}
-            fillColor={'#ff0000'}
-            radius={500}
-            />
-        ));
-    }
     onRegionChange(region) {
         this.setState({ region });
     }
     async componentDidMount(){
         this.getCountries();
+    }
+    getColorOfMarker(population,cases){
+        let how_bad='black';
+        let procent = cases * 100 / population;
+        if (procent<=1){
+            how_bad='#bfff00';
+        }
+        if (procent<=2 && procent>1){
+            how_bad='#ffff00';
+        }
+        if (procent<=3 && procent>2){
+            how_bad='#ffbf00';
+        }
+        if (procent<=4 && procent>3){
+            how_bad='#ff8000';
+        }
+        if (procent>4){
+            how_bad='#ff4000';
+        }
+        return how_bad;
     }
     render(){
         return(
@@ -116,16 +123,18 @@ export default class Map extends Component{
                     this.state.countries.map(( {label, value, cases, recovered, deaths, population, latitude, longitude,flag},i) => 
                     <Marker key={i} 
                         coordinate = {{ latitude: latitude, longitude: longitude,}}
-                        pinColor={'wheat'}
                         opacity={0.8}
+                        tracksViewChanges={false}
+                        anchor= {{x:0.5,y:0.5}}
                         >
-                        
+                        <MaterialCommunityIcons name="checkbox-blank-circle" color={this.getColorOfMarker(population,cases)} size={50} />
                         <Callout>
                             <View style={styles.bubble}>
-                                <Text>{label}</Text>
-                                <Text>Cases: {cases}</Text>
-                                <Text>Recovered: {recovered}</Text>
-                                <Text>Deaths: {deaths}</Text>
+                                    <Text style={styles.label}>{label}</Text>
+                                    <Text style={styles.label_cases}>Cases: {cases}</Text>
+                                    <Text>Recovered: {recovered}</Text>
+                                    <Text>Deaths: {deaths}</Text>
+                                
                             </View>
                         </Callout>
                         </Marker> 
@@ -147,9 +156,7 @@ const styles = StyleSheet.create({
     },
     bubble:{
         backgroundColor:'#fff',
-        borderRadius:6,
         borderColor:'black',
-        borderWidth:0.5,
         padding:15,
         width:200,
     },
@@ -159,8 +166,40 @@ const styles = StyleSheet.create({
         borderRadius: 100 / 2,
         backgroundColor: "red",
       },
+    flagstyle:{
+        flex: 1,
+        width: null,
+    },
+    label: {
+        fontSize: 20,
+        fontWeight:'bold'
+    },
+    label_cases: {
+        fontSize: 16,
+    },
+    ImageContainer :
+  {
+      flex:1,
+      padding: 5,
+  },
    });
    /*
+     <Text style={{ height: 150, position: "relative", bottom: 40}}>
+                                        <Image style={{ width: 190, height: 100, }} source={{uri: flag}} resizeMode= 'cover'/>
+                                    </Text>
+   <MaterialCommunityIcons name="alert-box" color={this.getColorOfMarker(population,cases)} size={26} />
+   <View style={{  width: 50,
+                                        height: 50,
+                                        borderRadius: 100 / 2,
+                                        backgroundColor: "red",
+                                        transform: [{ translateX: -50}, { translateY: -50}],
+                                        }}/>
+                                        <View style={{
+                                    width: 100,
+                                    height: 50,
+                                    borderRadius:1,
+                                    borderColor: 'black'  
+                                }}/>
    <Circle key={i} center={{
                             latitude: latitude,
                             longitude: longitude
