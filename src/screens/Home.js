@@ -13,12 +13,9 @@ import {sortDataByCases} from '../source/utils';
 import ChartData from '../source/ChartData';
 import ranks from '../styles/home';
 import home from '../styles/home';
-//import { SafeAreaView } from 'react-navigation';
 import { event } from 'react-native-reanimated';
 import { CardStyleInterpolators } from 'react-navigation-stack';
 import { SafeAreaView } from 'react-native-safe-area-context';
-//import '../styles/home.css';
-//import { getCountriesData } from '../source/dataCovid19';
 
 export default class Home extends Component{
     state = {
@@ -92,8 +89,8 @@ export default class Home extends Component{
           } 
     }
     async componentDidMount(){
-        this.getCountries();
-        this.getWorldwideData();  
+        this.getWorldwideData(); 
+        this.getCountries(); 
     }
 
 
@@ -101,17 +98,18 @@ export default class Home extends Component{
         return(
             <SafeAreaView>
                         <DropDownPicker
+                        
                         searchable={true}
                         searchablePlaceholder="Search for an item"
                         searchableError={() => <Text>Not Found</Text>}
                         items={this.state.countries}
-                        defaultValue= {this.state.country}
-                        containerStyle={{height: 50,}}
+                        defaultValue= 'worldwide'
+                        containerStyle={{height: 50}}
                         itemStyle={{
                         justifyContent: 'flex-start',
                         }}
                         dropDownStyle={{backgroundColor: '#fafafa',zIndex:6}}
-                        onChangeItem={item => this.getDataAboutCountry(item)}
+                        onChangeItem={(item) => this.getDataAboutCountry(item)}
                         />
                 <View style={home.list_flex}>
                     <SafeAreaView>
@@ -125,7 +123,7 @@ export default class Home extends Component{
                         {title:"DEATHS", today: this.state.todayDeaths,all: this.state.deaths, key: "deaths"} 
                         ]}
                         renderItem={({item}) => (
-                        <TouchableWithoutFeedback onPress={()=>this.setState({casesType: item.key})} accessibilityRole='button'> 
+                        <TouchableWithoutFeedback onPress={(item)=>this.setState({casesType: item.key})} accessibilityRole='button'> 
                         <Card
                         containerStyle={{
                             elevation:4, 

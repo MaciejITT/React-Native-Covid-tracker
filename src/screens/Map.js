@@ -6,10 +6,10 @@ import {
   Text,
   Image,
   ImageBackground,
-  SafeAreaView,
 } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default class Map extends Component{ 
         state = {
@@ -39,16 +39,12 @@ export default class Map extends Component{
                     population: country.population,
                     latitude: country.countryInfo.lat,
                     longitude: country.countryInfo.long,
-                    flag: country.countryInfo.flag
                 }));
             this.setState({countries: countries_data});
           } catch (error) {
             console.error(error);
           } 
-    }
-    handleEvent(){  
-        console.log(this.props);  
-    }  
+    } 
     goToCountry(item){
         let data = this.state.countries;
         let coordinates = {
@@ -97,20 +93,18 @@ export default class Map extends Component{
     render(){
         return(
             <SafeAreaView>
-            <View style={styles.container}>
-            <View>
                 <DropDownPicker
                             searchable={true}
                             searchablePlaceholder="Search for an item"
                             searchableError={() => <Text>Not Found</Text>}
                             items= {this.state.countries}
                             defaultValue= {this.state.country}
-                            containerStyle={{height: 50,}}
+                            containerStyle={{height: 50}}
                             itemStyle={{
-                            justifyContent: 'flex-start',
+                            justifyContent: 'flex-start'
                             }}
-                            dropDownStyle={{backgroundColor: '#fafafa'}}
-                            onChangeItem={item => this.goToCountry(item)}
+                            dropDownStyle={{backgroundColor: '#fafafa',zIndex:6}}
+                            onChangeItem={item=> this.goToCountry(item)}
                             />
                 <View style={styles.legendContainer}>
                     <Text>Cases in {'\n'}population</Text>
@@ -130,37 +124,34 @@ export default class Map extends Component{
                     <View style={styles.square_green}/><View ><Text> 1%</Text></View>
                     </View>
                 </View>
-            </View>
-            <View >
+            <View styles={styles.container_map}>
                 <MapView style={styles.map}
                     provider={PROVIDER_GOOGLE}
                     region={this.state.region}
                     maxZoomLevel={19}
                 >
                 {
-                    this.state.countries.map(( {label, value, cases, recovered, deaths, population, latitude, longitude,flag},i) => 
+                    this.state.countries.map(( {label, cases, recovered, deaths, population, latitude, longitude},i) => 
                     <Marker key={i} 
-                        coordinate = {{ latitude: latitude, longitude: longitude,}}
+                        coordinate = {{ latitude: latitude, longitude: longitude}}
                         opacity={0.8}
                         tracksViewChanges={false}
                         anchor= {{x:0.5,y:0.5}}
                         >
                         <MaterialCommunityIcons name="checkbox-blank-circle" color={this.getColorOfMarker(population,cases)} size={50} />
-                        <Callout>
-                            <View style={styles.bubble}>
-                                    <Text style={styles.label}>{label}</Text>
-                                    <Text style={styles.label_cases}>Cases: {cases}</Text>
-                                    <Text>Recovered: {recovered}</Text>
-                                    <Text>Deaths: {deaths}</Text>
-                                
-                            </View>
-                        </Callout>
+                            <Callout>
+                                <View style={styles.bubble}>
+                                        <Text style={styles.label}>{label}</Text>
+                                        <Text style={styles.label_cases}>Cases: {cases}</Text>
+                                        <Text>Recovered: {recovered}</Text>
+                                        <Text>Deaths: {deaths}</Text>
+                                    
+                                </View>
+                            </Callout>
                         </Marker> 
                     )
                 }
                 </MapView>
-                
-            </View>
             </View>
             </SafeAreaView>
         )   
@@ -169,6 +160,8 @@ export default class Map extends Component{
 const styles = StyleSheet.create({
     container: {
       height: '100%',
+    },
+    container_map:{
     },
     map: {
       height: '100%',
@@ -203,9 +196,9 @@ const styles = StyleSheet.create({
     },
     legendContainer:{
         position:'absolute',
+        zIndex:4,
         top: 52,
-        elevation:8,
-        backgroundColor: 'rgba(0,0,0,0.0)',
+        backgroundColor: 'transparent',
         marginTop: 2,
         marginLeft: 7,
     },
@@ -239,6 +232,26 @@ const styles = StyleSheet.create({
     },
    });
    /*
+<View style={styles.legendContainer}>
+                    <Text>Cases in {'\n'}population</Text>
+                    <View style={styles.legendText}>
+                    <View style={styles.square_red}/><View ><Text> {'>'}4%</Text></View>
+                    </View>
+                    <View style={styles.legendText}>
+                    <View style={styles.square_orange}/><View ><Text> 4%</Text></View>
+                    </View>
+                    <View style={styles.legendText}>
+                    <View style={styles.square_gold}/><View ><Text> 3%</Text></View>
+                    </View>
+                    <View style={styles.legendText}>
+                    <View style={styles.square_yellow}/><View ><Text> 2%</Text></View>
+                    </View>
+                    <View style={styles.legendText}>
+                    <View style={styles.square_green}/><View ><Text> 1%</Text></View>
+                    </View>
+                </View>
+
+
      <Text style={{ height: 150, position: "relative", bottom: 40}}>
                                         <Image style={{ width: 190, height: 100, }} source={{uri: flag}} resizeMode= 'cover'/>
                                     </Text>
