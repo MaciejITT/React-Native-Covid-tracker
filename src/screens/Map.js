@@ -112,6 +112,24 @@ export default class Map extends Component{
                             dropDownStyle={{backgroundColor: '#fafafa'}}
                             onChangeItem={item => this.goToCountry(item)}
                             />
+                <View style={styles.legendContainer}>
+                    <Text>Cases in {'\n'}population</Text>
+                    <View style={styles.legendText}>
+                    <View style={styles.square_red}/><View ><Text> {'>'}4%</Text></View>
+                    </View>
+                    <View style={styles.legendText}>
+                    <View style={styles.square_orange}/><View ><Text> 4%</Text></View>
+                    </View>
+                    <View style={styles.legendText}>
+                    <View style={styles.square_gold}/><View ><Text> 3%</Text></View>
+                    </View>
+                    <View style={styles.legendText}>
+                    <View style={styles.square_yellow}/><View ><Text> 2%</Text></View>
+                    </View>
+                    <View style={styles.legendText}>
+                    <View style={styles.square_green}/><View ><Text> 1%</Text></View>
+                    </View>
+                </View>
             </View>
             <View >
                 <MapView style={styles.map}
@@ -141,6 +159,7 @@ export default class Map extends Component{
                     )
                 }
                 </MapView>
+                
             </View>
             </View>
             </SafeAreaView>
@@ -165,7 +184,7 @@ const styles = StyleSheet.create({
         height: 100,
         borderRadius: 100 / 2,
         backgroundColor: "red",
-      },
+    },
     flagstyle:{
         flex: 1,
         width: null,
@@ -178,10 +197,46 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     ImageContainer :
-  {
-      flex:1,
-      padding: 5,
-  },
+    {
+        flex:1,
+        padding: 5,
+    },
+    legendContainer:{
+        position:'absolute',
+        top: 52,
+        elevation:8,
+        backgroundColor: 'rgba(0,0,0,0.0)',
+        marginTop: 2,
+        marginLeft: 7,
+    },
+    legendText:{
+        flexDirection: 'row', 
+    },
+    square_red: {
+        width: 15,
+        height: 15,
+        backgroundColor: "#ff4000",
+    },
+    square_orange: {
+        width: 15,
+        height: 15,
+        backgroundColor: "#ff8000",
+    },
+    square_gold: {
+        width: 15,
+        height: 15,
+        backgroundColor: "#ffbf00",
+    },
+    square_yellow: {
+        width: 15,
+        height: 15,
+        backgroundColor: "#ffff00",
+    },
+    square_green: {
+        width: 15,
+        height: 15,
+        backgroundColor: "#bfff00",
+    },
    });
    /*
      <Text style={{ height: 150, position: "relative", bottom: 40}}>
