@@ -6,7 +6,7 @@ import {
   TouchableWithoutFeedback,
   ScrollView,
 } from 'react-native';
-import { Card } from 'react-native-elements'
+import { Card } from 'react-native-elements';
 import Icon from 'react-native-vector-icons';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {sortDataByCases} from '../source/utils';
