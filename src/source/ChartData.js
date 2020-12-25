@@ -90,6 +90,9 @@ class ChartData extends Component{
             }}
             />
               <VictoryLine  
+              animate={{
+                duration: 1000
+              }}
               data={this.state.datasets} x="Data" y="Liczba"
               style={{data: {stroke: '#c43a31', strokeWidth: 1.5}}}
               />

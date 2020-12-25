@@ -9,7 +9,7 @@ import {
   import charts from '../styles/charts';
   import PureChart from 'react-native-pure-chart';
   import numbro from "numbro";
-  import { VictoryAxis, VictoryChart,  VictoryTheme, VictoryPie } from "victory-native";
+  import { VictoryPie} from "victory-native";
 import Svg from 'react-native-svg';
 import { nullFormat } from 'numeral';
 import { SafeAreaView } from 'react-native';
@@ -19,10 +19,6 @@ class ChartPieData extends Component{
     constructor() {
         super();
         this.state = {
-            data_cases: [
-            ],
-            data_recovered: [
-            ],
             data_deaths: [
             ],
             selected_countries: [],
@@ -30,30 +26,17 @@ class ChartPieData extends Component{
     }
     getDataForSelectedCountries = async(selected_countries) =>{
         const selected = selected_countries;
-        let new_datapoint_cases;
-        let new_datapoint_recovered;
         let new_datapoint_deaths;
-        let cases =[];
-        let recovered =[];
         let deaths =[];
         for (let country in selected){
         const url_country = `https://disease.sh/v3/covid-19/countries/${selected[country]}`;
         try {
             let response = await fetch(url_country);
             let countries_data = await response.json();
-                new_datapoint_cases = {
-                    Kraj: selected[country],
-                    Liczba: countries_data.cases,
-                }
-                cases.push(new_datapoint_cases);
-                new_datapoint_recovered = {
-                    Kraj: selected[country],
-                    Liczba: countries_data.recovered,
-                }
-                recovered.push(new_datapoint_recovered);
                 new_datapoint_deaths = {
                     Kraj: selected[country],
                     Liczba: countries_data.deaths,
+                    label: selected[country],
                 }
                 deaths.push(new_datapoint_deaths);
             
@@ -62,14 +45,11 @@ class ChartPieData extends Component{
           } 
         }
         this.setState({
-            data_cases: cases,
-            data_recovered: recovered,
             data_deaths: deaths
         });
         this._isMounted=true;
     }
     async componentDidMount(){
-        //this.getDataforBasicChart(this.props.casesType, this.props.country);
         this.getDataForSelectedCountries(this.props.selected_countries); 
     }
     componentDidUpdate(prevProps){
@@ -85,12 +65,39 @@ class ChartPieData extends Component{
     render() {
         return(
             <VictoryPie
-                colorScale={["gold", "cyan", "navy" ]}
-                data={[
-                    { x: "Poland", y: 50 },
-                    { x: "Afganistan", y: 22 },
-                    { x: "Albania", y: 22 }
-                ]}
+                animate={{
+                    duration: 2000
+                }}
+                x = "Kraj"
+                y = "Liczba"
+                colorScale="qualitative"
+                width={300}
+                data={this.state.data_deaths}
+                style={{ labels: {fontSize: 15, padding: 10}}}
+                labelPosition={({ index }) => index
+                    ? "centroid"
+                    : "startAngle"
+                }
+                labelPlacement={({ index }) => index
+                    ? "parallel"
+                    : "vertical"
+                }
+                labels={({ datum }) => `${datum.Kraj}\n ${datum.Liczba}`}  
+                events={[{
+                    target: "data",
+                    eventHandlers: {
+                      onClick: () => {
+                        return [
+                          {
+                            target: "labels",
+                            mutation: (props) => {
+                              return props.text === "clicked" ? null : { text: "clicked" };
+                            }
+                          }
+                        ];
+                      }
+                    }
+                  }]}
             />
         );
     }

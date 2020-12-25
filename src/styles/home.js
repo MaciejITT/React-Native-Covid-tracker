@@ -12,7 +12,12 @@ export default StyleSheet.create({
       borderRadius:10,
       paddingTop: 10,
     },
-
+    chartContainer2:{
+        borderTopWidth:20,
+        borderTopColor: 'orange',
+        backgroundColor: 'white',
+        borderRadius:10,
+      },
     chartTitle:{
         marginLeft: 10,
         justifyContent:'center',

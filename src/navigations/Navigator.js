@@ -34,9 +34,9 @@ const HomeStackNavigator = () => {
                     ),
                   }}
                 />
-                <MaterialBottomTabs.Screen name="GRAPHS" component={Graphs}
+                <MaterialBottomTabs.Screen name="CHARTS" component={Graphs}
                 options={{
-                    tabBarLabel: 'Graphs',
+                    tabBarLabel: 'Charts',
                     tabBarIcon: ({ color }) => (
                       <MaterialCommunityIcons name="chart-bar" color={color} size={26} />
                     ),

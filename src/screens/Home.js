@@ -123,7 +123,7 @@ export default class Home extends Component{
                         {title:"DEATHS", today: this.state.todayDeaths,all: this.state.deaths, key: "deaths"} 
                         ]}
                         renderItem={({item}) => (
-                        <TouchableWithoutFeedback onPress={(item)=>this.setState({casesType: item.key})} accessibilityRole='button'> 
+                        <TouchableWithoutFeedback onPress={()=>this.setState({casesType: item.key})} accessibilityRole='button'> 
                         <Card
                         containerStyle={{
                             elevation:4, 
