@@ -7,15 +7,11 @@ import {
   ScrollView,
 } from 'react-native';
 import { Card } from 'react-native-elements';
-import Icon from 'react-native-vector-icons';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {sortDataByCases} from '../source/utils';
 import ChartData from '../source/ChartData';
-import ranks from '../styles/home';
 import home from '../styles/home';
-import { event } from 'react-native-reanimated';
-import { CardStyleInterpolators } from 'react-navigation-stack';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import numbro from "numbro";
 
 export default class Home extends Component{
     state = {
@@ -47,6 +43,8 @@ export default class Home extends Component{
                     todayDeaths: country.todayDeaths,
                     deaths: country.deaths,
                 }));
+                
+                countries_data.push({label: 'Worldwide', value: 'worldwide'}) ;
             this.setState({countries: countries_data});
           } catch (error) {
             console.error(error);
@@ -65,12 +63,16 @@ export default class Home extends Component{
                 recovered: countries_data.recovered,
                 todayDeaths: countries_data.todayDeaths,
                 deaths: countries_data.deaths,
+                country: 'worldwide'
             });
           } catch (error) {
             console.error(error);
           } 
     }
     getDataAboutCountry = async (item) => {
+        if(item.value==='worldwide'){
+            this.getWorldwideData();
+        }else{
         const url_country = `https://disease.sh/v3/covid-19/countries/${item.value}`;
         try {
             let response = await fetch(url_country);
@@ -86,7 +88,7 @@ export default class Home extends Component{
             });
           } catch (error) {
             console.error(error);
-          } 
+          } }
     }
     async componentDidMount(){
         this.getWorldwideData(); 
@@ -132,8 +134,8 @@ export default class Home extends Component{
                             borderTopColor: item.key === this.state.casesType ? "yellowgreen" : "#1A86DC"}}
                             >
                             <Card.Title>{item.title}</Card.Title> 
-                            <Text>Today: {item.today}</Text>
-                            <Text>All: {item.all}</Text>
+                            <Text>Today: {numbro(parseInt(item.today)).format({thousandSeparated: true})}</Text>
+                            <Text>All: {numbro(parseInt(item.all)).format({thousandSeparated: true})}</Text>
                         </Card>
                         </TouchableWithoutFeedback>
                         )}
@@ -142,7 +144,7 @@ export default class Home extends Component{
                 </View>
                     <ScrollView style={{marginTop: 10, paddingBottom:20}}>
                     <Card containerStyle={home.chartContainer}>
-                        <Text style={home.chartTitle}>{this.state.country} new cases</Text>
+                        <Text style={home.chartTitle}>{this.state.country} cases</Text>
                         <ChartData casesType={this.state.casesType} country={this.state.country} />
                     </Card>
 

@@ -1,13 +1,6 @@
 import React,{Component} from 'react';
-import {
-    StyleSheet,
-    Text,
-    Dimensions,
-    View,
-    Array
-  } from 'react-native';
   import numbro from "numbro";
-  import { VictoryAxis, VictoryChart, VictoryTooltip, VictoryBar, VictoryTheme,VictoryGroup } from "victory-native";
+  import { VictoryAxis, VictoryChart, VictoryBar, VictoryTheme,VictoryGroup } from "victory-native";
 
 class ChartBarData extends Component{
     _isMounted = false;

@@ -10,7 +10,6 @@ import { Card } from 'react-native-elements';
 import ChartBarData from '../source/ChartBarData';
 import ChartPieData from '../source/ChartPieData';
 import ChartContinentsData from '../source/ChartContinentsData';
-import { ScrollPager } from 'react-native-tab-view';
 import { ScrollView } from 'react-native-gesture-handler';
 
 export default class Graphs extends Component{
@@ -104,11 +103,3 @@ export default class Graphs extends Component{
         )   
     }
 }
-/*<Card containerStyle={home.chartContainer}>
-                        <Text style={home.chartTitle}>new cases {"&"} recovered</Text>
-                        <ChartBarData selected_countries={this.state.selected_countries}/>
-                    </Card>
-                    <Card containerStyle={home.chartContainer2}>
-                        <Text style={home.chartTitle}>DEATHS</Text>
-                        <ChartPieData selected_countries={this.state.selected_countries}/>
-                    </Card> */

@@ -1,16 +1,6 @@
 import React,{Component} from 'react';
-import {
-    StyleSheet,
-    Text,
-    Dimensions,
-    View
-  } from 'react-native';
-  import charts from '../styles/charts';
-  import PureChart from 'react-native-pure-chart';
-  import numbro from "numbro";
-  import { VictoryAxis, VictoryChart, VictoryLine, VictoryTheme } from "victory-native";
-import Svg from 'react-native-svg';
-import { nullFormat } from 'numeral';
+import numbro from "numbro";
+import { VictoryAxis, VictoryChart, VictoryLine, VictoryTheme } from "victory-native";
 
 class ChartData extends Component{
     _isMounted = false;

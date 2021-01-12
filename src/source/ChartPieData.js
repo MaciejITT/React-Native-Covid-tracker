@@ -1,18 +1,5 @@
 import React,{Component} from 'react';
-import {
-    StyleSheet,
-    Text,
-    Dimensions,
-    View,
-    Array
-  } from 'react-native';
-  import charts from '../styles/charts';
-  import PureChart from 'react-native-pure-chart';
-  import numbro from "numbro";
-  import { VictoryPie} from "victory-native";
-import Svg from 'react-native-svg';
-import { nullFormat } from 'numeral';
-import { SafeAreaView } from 'react-native';
+import { VictoryPie} from "victory-native";
 
 class ChartPieData extends Component{
     _isMounted = false;
