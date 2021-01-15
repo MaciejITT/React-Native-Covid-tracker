@@ -4,18 +4,16 @@ import {
   Text,
   SafeAreaView, 
   ScrollView,
-  StyleSheet,
   Button,
-} from 'react-native';
-import { CheckBox } from 'react-native-elements'
-import Home from '../screens/Home';
+} from 'react-native';  
+import numbro from "numbro";
 import ranks from '../styles/ranks';
 import {sortDataByCases,
      sortDataByRecovered,
      sortDataByDeaths,
      sortDataBytodayCases, 
      sortDataBytodayRecovered, 
-     sortDataBytodayDeaths} from '../source/utils'
+     sortDataBytodayDeaths} from '../source/utils';
 
 export default class Ranks extends Component{
         state={
@@ -77,16 +75,16 @@ export default class Ranks extends Component{
         if(this.state.checked==='today'){
             return(
                 <View>
-                    <Text style={ranks.text_fashion}>Today Cases: {todayCases}</Text>
-                    <Text style={ranks.text_fashion}>Today Recovered: {todayRecovered}</Text>
-                    <Text style={ranks.text_fashion}>Today Deaths: {todayDeaths}</Text>
+                    <Text style={ranks.text_fashion}>Today Cases: {numbro(parseInt(todayCases)).format({thousandSeparated: true})}</Text>
+                    <Text style={ranks.text_fashion}>Today Recovered: {numbro(parseInt(todayRecovered)).format({thousandSeparated: true})}</Text>
+                    <Text style={ranks.text_fashion}>Today Deaths: {numbro(parseInt(todayDeaths)).format({thousandSeparated: true})}</Text>
                 </View>);
         }else{
             return(
                 <View>
-                    <Text style={ranks.text_fashion}>Cases: {cases}</Text>
-                    <Text style={ranks.text_fashion}>Recovered: {recovered}</Text>
-                    <Text style={ranks.text_fashion}>Deaths: {deaths}</Text>
+                    <Text style={ranks.text_fashion}>Cases: {numbro(parseInt(cases)).format({thousandSeparated: true})}</Text>
+                    <Text style={ranks.text_fashion}>Recovered: {numbro(parseInt(recovered)).format({thousandSeparated: true})}</Text>
+                    <Text style={ranks.text_fashion}>Deaths: {numbro(parseInt(deaths)).format({thousandSeparated: true})}</Text>
                 </View>);
         }
         

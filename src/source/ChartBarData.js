@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
   import numbro from "numbro";
-  import { VictoryAxis, VictoryChart, VictoryBar, VictoryTheme,VictoryGroup } from "victory-native";
+  import { VictoryAxis, VictoryChart, VictoryBar, VictoryTheme,VictoryGroup, VictoryLegend } from "victory-native";
 
 class ChartBarData extends Component{
     _isMounted = false;
@@ -90,6 +90,15 @@ class ChartBarData extends Component{
               data={this.state.data_recovered} x="Kraj" y="Liczba"
               />
             </VictoryGroup> 
+            <VictoryLegend x={125} y={10}
+                orientation="horizontal"
+                gutter={20}
+                style={{ border: { stroke: "black" } }}
+                colorScale={[ "navy", "blue", "cyan" ]}
+                data={[
+                    { name: "One" }, { name: "Two" }, { name: "Three" }
+                ]}
+                />
             </VictoryChart>
         );
     }

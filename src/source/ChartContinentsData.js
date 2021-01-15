@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import { VictoryPie } from "victory-native";
+import { VictoryPie,VictoryTheme,VictoryAxis, VictoryLegend, VictoryChart } from "victory-native";
 
 class ChartPieData extends Component{
     _isMounted = false;
@@ -49,7 +49,7 @@ class ChartPieData extends Component{
 
     render() {
         return(
-            <VictoryPie
+             <VictoryPie
                 x = "Kontynent"
                 y = "Liczba"
                 colorScale="qualitative"
@@ -60,6 +60,7 @@ class ChartPieData extends Component{
                 height={300}
                 labels={({ datum }) => `${datum.Kontynent}\n ${datum.Liczba}`}  
             />
+            
         );
     }
 }

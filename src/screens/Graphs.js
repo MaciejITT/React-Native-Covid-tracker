@@ -11,6 +11,8 @@ import ChartBarData from '../source/ChartBarData';
 import ChartPieData from '../source/ChartPieData';
 import ChartContinentsData from '../source/ChartContinentsData';
 import { ScrollView } from 'react-native-gesture-handler';
+import { VictoryChart, VictoryLegend, VictoryAxis } from 'victory-native';
+import ChartLegend from '../source/ChartLegend';
 
 export default class Graphs extends Component{
     _isMounted = false;
@@ -95,6 +97,7 @@ export default class Graphs extends Component{
                     <Card containerStyle={home.chartContainer2}>
                         <Text style={home.chartTitle}>CONTINENTS</Text>
                         <ChartContinentsData/>
+                        <ChartLegend selected_countries={["North America", "South America", "Africa", "Europe", "Asia", "Australia/Oceania"]}/>
                     </Card>
                     <View style={{height:55}}></View>
                 </ScrollView>

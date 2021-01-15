@@ -6,21 +6,29 @@
  * @flow strict-local
  */
 
-import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+import React, { Component } from 'react';
+import NetInfo from '@react-native-community/netinfo';
+import { Alert, NativeModules } from 'react-native';
 import HomeStackNavigator from './src/navigations/Navigator';
 
-const App = () => {
-  return(
+const unsubscribe = NetInfo.addEventListener(state => {
+  if(!state.isConnected){
+    Alert.alert("Connection lost","Please check your connection with internet!",
+    [
+      {
+        text: 'Try again',
+        onPress: () => NativeModules.DevSettings.reload()
+      }
+    ]
+    );
+  }
+});
+export default class App extends Component {
+  
+  render(){
+    return(
       <HomeStackNavigator/>
-  )
+    )
+  }  
 }
 
-export default App;
