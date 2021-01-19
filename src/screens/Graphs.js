@@ -11,7 +11,6 @@ import ChartBarData from '../source/ChartBarData';
 import ChartPieData from '../source/ChartPieData';
 import ChartContinentsData from '../source/ChartContinentsData';
 import { ScrollView } from 'react-native-gesture-handler';
-import { VictoryChart, VictoryLegend, VictoryAxis } from 'victory-native';
 import ChartLegend from '../source/ChartLegend';
 
 export default class Graphs extends Component{
@@ -45,9 +44,9 @@ export default class Graphs extends Component{
         }
     getDataSelectedCountries(item){
         this.setState({
-            selected_countries: item
+            selected_countries: item,
         });
-        if(item ===[]){
+        if(item === []){
             this.setState({
                 selected_countries: []
             });
@@ -89,7 +88,7 @@ export default class Graphs extends Component{
                     }}
                     dropDownMaxHeight={500}
                     dropDownStyle={{backgroundColor: '#fafafa',zIndex:6}}
-                    onChangeItem={item => this.getDataSelectedCountries(item)}
+                    onChangeItem={(item) => this.getDataSelectedCountries(item)}
                     />
             <View>
                 <ScrollView style={{marginBottom:55}}>

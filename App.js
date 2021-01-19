@@ -8,9 +8,10 @@
 
 import React, { Component } from 'react';
 import NetInfo from '@react-native-community/netinfo';
-import { Alert, NativeModules } from 'react-native';
+import { Alert, NativeModules, LogBox } from 'react-native';
 import HomeStackNavigator from './src/navigations/Navigator';
 
+LogBox.ignoreAllLogs();
 const unsubscribe = NetInfo.addEventListener(state => {
   if(!state.isConnected){
     Alert.alert("Connection lost","Please check your connection with internet!",

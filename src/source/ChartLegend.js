@@ -41,7 +41,7 @@ export default class ChartLegend extends Component{
                 {
                     this.state.selected.map((i,j) =>(
                         
-                        <View style={styles.legendText}><View style={[styles.square,{backgroundColor:  this.legendcolors(j)}]}/>
+                        <View key={j} style={styles.legendText}><View style={[styles.square,{backgroundColor:  this.legendcolors(j)}]}/>
                         <Text> {i}</Text></View>
                     ))
                 }
